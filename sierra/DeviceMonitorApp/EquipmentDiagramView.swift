@@ -106,7 +106,7 @@ struct EquipmentDiagramView: View {
               .frame(width: 100, height: 70)
               .blendMode(.multiply)
               .background(Color.clear)
-            
+
             if let device = selectedDevice, device.type == .blaster {
               RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.blue, lineWidth: 4)
@@ -116,7 +116,26 @@ struct EquipmentDiagramView: View {
             }
           }
           .position(x: width * 0.25, y: height * 0.8)
-                    
+
+          // Vision System Equipment (center)
+          ZStack {
+            Image("vision")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 110, height: 75)
+              .blendMode(.multiply)
+              .background(Color.clear)
+
+            if let device = selectedDevice, device.type == .vision {
+              RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.green, lineWidth: 4)
+                .frame(width: 120, height: 85)
+                .shadow(color: .green.opacity(0.5), radius: 8, x: 0, y: 0)
+                .animation(.easeInOut(duration: 0.5), value: selectedDevice?.id)
+            }
+          }
+          .position(x: width * 0.5, y: height * 0.45)
+
           // Work Area Indicators
           Circle()
             .fill(Color.red.opacity(0.3))

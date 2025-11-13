@@ -61,15 +61,14 @@ struct DeviceRowView: View {
             // Device icon
             ZStack {
                 Circle()
-                    .fill(device.isOnline ? 
-                          LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing) :
+                    .fill(device.isOnline ?
+                          deviceGradient() :
                           LinearGradient(colors: [.gray, .secondary], startPoint: .topLeading, endPoint: .bottomTrailing))
                     .frame(width: 50, height: 50)
-                
+
                 Image(device.type.icon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundColor(.white)
                     .frame(width: 40, height: 40)
             }
             
@@ -133,7 +132,18 @@ struct DeviceRowView: View {
         .padding(.vertical, 8)
         .contentShape(Rectangle())
     }
-    
+
+    private func deviceGradient() -> LinearGradient {
+        switch device.type {
+        case .painter:
+            return LinearGradient(colors: [.orange, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
+        case .blaster:
+            return LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
+        case .vision:
+            return LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
+
     private func batteryIcon(level: Double) -> String {
         switch level {
         case 75...100: return "battery.100"

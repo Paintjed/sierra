@@ -15,11 +15,13 @@ struct Device: Identifiable, Hashable {
     enum DeviceType: String, CaseIterable {
         case painter = "Painter"
         case blaster = "Water Blaster"
-        
+        case vision = "Vision System"
+
         var icon: String {
             switch self {
             case .painter: return "painter"
             case .blaster: return "water_blaster"
+            case .vision: return "vision"
             }
         }
     }
@@ -60,7 +62,7 @@ class DeviceStatusManager: ObservableObject {
     private func setupSampleData() {
         devices = [
             Device(
-                name: "Painter 1",
+                name: "Painter",
                 type: .painter,
                 isOnline: true,
                 isWorking: true,
@@ -83,30 +85,7 @@ class DeviceStatusManager: ObservableObject {
                 )
             ),
             Device(
-                name: "Painter 2",
-                type: .painter,
-                isOnline: false,
-                isWorking: false,
-                workProgress: 0.0,
-                currentTask: nil,
-                lastSeen: Date().addingTimeInterval(-1800),
-                status: DeviceStatus(
-                    cpuUsage: 0.0,
-                    batteryLevel: 23.0,
-                    memoryUsage: 15.7,
-                    storageUsage: 56.2,
-                    temperature: 22.5,
-                    networkStatus: DeviceStatus.NetworkStatus(
-                        isConnected: false,
-                        signalStrength: 0.0,
-                        downloadSpeed: 0.0,
-                        uploadSpeed: 0.0
-                    ),
-                    uptime: 3600 * 12
-                )
-            ),
-            Device(
-                name: "Blaster 1",
+                name: "Blaster",
                 type: .blaster,
                 isOnline: true,
                 isWorking: true,
@@ -129,51 +108,28 @@ class DeviceStatusManager: ObservableObject {
                 )
             ),
             Device(
-                name: "Blaster 2",
-                type: .blaster,
-                isOnline: false,
-                isWorking: false,
-                workProgress: 0.0,
-                currentTask: nil,
-                lastSeen: Date().addingTimeInterval(-3600),
-                status: DeviceStatus(
-                    cpuUsage: 0.0,
-                    batteryLevel: 12.0,
-                    memoryUsage: 25.9,
-                    storageUsage: 45.3,
-                    temperature: 20.8,
-                    networkStatus: DeviceStatus.NetworkStatus(
-                        isConnected: false,
-                        signalStrength: 0.0,
-                        downloadSpeed: 0.0,
-                        uploadSpeed: 0.0
-                    ),
-                    uptime: 3600 * 18
-                )
-            ),
-            Device(
-                name: "Painter 3",
-                type: .painter,
+                name: "Vision",
+                type: .vision,
                 isOnline: true,
-                isWorking: false,
-                workProgress: 0.0,
-                currentTask: nil,
+                isWorking: true,
+                workProgress: 28.7,
+                currentTask: "Scanning Building Structure - Floor 2",
                 lastSeen: Date(),
                 status: DeviceStatus(
-                    cpuUsage: 35.7,
-                    batteryLevel: 78.0,
-                    memoryUsage: 72.4,
+                    cpuUsage: 72.5,
+                    batteryLevel: 91.0,
+                    memoryUsage: 85.4,
                     storageUsage: 67.8,
-                    temperature: 29.2,
+                    temperature: 35.6,
                     networkStatus: DeviceStatus.NetworkStatus(
                         isConnected: true,
                         signalStrength: 92.0,
-                        downloadSpeed: 245.8,
-                        uploadSpeed: 67.3
+                        downloadSpeed: 428.3,
+                        uploadSpeed: 156.4
                     ),
                     uptime: 3600 * 24 * 5
                 )
-            )
+            ),
         ]
         
         selectedDevice = devices.first
@@ -222,7 +178,7 @@ class DeviceStatusManager: ObservableObject {
                     case .painter:
                         let tasks = [
                             "Painting Building Section A - Wall 1",
-                            "Painting Building Section A - Wall 2", 
+                            "Painting Building Section A - Wall 2",
                             "Painting Building Section B - Wall 1",
                             "Painting Building Section B - Wall 2",
                             "Painting Interior Room 101",
@@ -235,12 +191,26 @@ class DeviceStatusManager: ObservableObject {
                         let tasks = [
                             "Cleaning Exterior Wall Section A",
                             "Cleaning Exterior Wall Section B",
-                            "Cleaning Exterior Wall Section C", 
+                            "Cleaning Exterior Wall Section C",
                             "Cleaning Roof Section 1",
                             "Cleaning Roof Section 2",
                             "Cleaning Windows - Floor 1",
                             "Cleaning Windows - Floor 2",
                             "Pressure Washing Parking Area"
+                        ]
+                        device.currentTask = tasks.randomElement()
+                    case .vision:
+                        let tasks = [
+                            "Scanning Building Structure - Floor 1",
+                            "Scanning Building Structure - Floor 2",
+                            "Scanning Building Structure - Floor 3",
+                            "Inspecting Wall Quality - Section A",
+                            "Inspecting Wall Quality - Section B",
+                            "Detecting Surface Defects - North Wall",
+                            "Detecting Surface Defects - South Wall",
+                            "3D Mapping Construction Site",
+                            "Monitoring Work Progress - Zone A",
+                            "Analyzing Structural Integrity"
                         ]
                         device.currentTask = tasks.randomElement()
                     }
